@@ -1,0 +1,129 @@
+/*
+SCSS variables are information about icon's compiled state, stored under its original file name
+
+.icon-home {
+  width: $icon-home-width;
+}
+
+The large array-like variables contain all information about a single icon
+$icon-home: x y offset_x offset_y width height total_width total_height image_path;
+
+At the bottom of this section, we provide information about the spritesheet itself
+$spritesheet: width height image $spritesheet-sprites;
+*/
+$i-ic-card-area-name: 'i-ic-card-area';
+$i-ic-card-area-x: 48px;
+$i-ic-card-area-y: 0px;
+$i-ic-card-area-offset-x: -48px;
+$i-ic-card-area-offset-y: 0px;
+$i-ic-card-area-width: 19px;
+$i-ic-card-area-height: 18px;
+$i-ic-card-area-total-width: 67px;
+$i-ic-card-area-total-height: 54px;
+$i-ic-card-area-image: '../img/spritesheet.png';
+$i-ic-card-area: (48px, 0px, -48px, 0px, 19px, 18px, 67px, 54px, '../img/spritesheet.png', 'i-ic-card-area', );
+$i-ic-card-bathroom-name: 'i-ic-card-bathroom';
+$i-ic-card-bathroom-x: 48px;
+$i-ic-card-bathroom-y: 18px;
+$i-ic-card-bathroom-offset-x: -48px;
+$i-ic-card-bathroom-offset-y: -18px;
+$i-ic-card-bathroom-width: 19px;
+$i-ic-card-bathroom-height: 17px;
+$i-ic-card-bathroom-total-width: 67px;
+$i-ic-card-bathroom-total-height: 54px;
+$i-ic-card-bathroom-image: '../img/spritesheet.png';
+$i-ic-card-bathroom: (48px, 18px, -48px, -18px, 19px, 17px, 67px, 54px, '../img/spritesheet.png', 'i-ic-card-bathroom', );
+$i-ic-card-beds-name: 'i-ic-card-beds';
+$i-ic-card-beds-x: 0px;
+$i-ic-card-beds-y: 38px;
+$i-ic-card-beds-offset-x: 0px;
+$i-ic-card-beds-offset-y: -38px;
+$i-ic-card-beds-width: 21px;
+$i-ic-card-beds-height: 16px;
+$i-ic-card-beds-total-width: 67px;
+$i-ic-card-beds-total-height: 54px;
+$i-ic-card-beds-image: '../img/spritesheet.png';
+$i-ic-card-beds: (0px, 38px, 0px, -38px, 21px, 16px, 67px, 54px, '../img/spritesheet.png', 'i-ic-card-beds', );
+$i-logo-name: 'i-logo';
+$i-logo-x: 0px;
+$i-logo-y: 0px;
+$i-logo-offset-x: 0px;
+$i-logo-offset-y: 0px;
+$i-logo-width: 48px;
+$i-logo-height: 38px;
+$i-logo-total-width: 67px;
+$i-logo-total-height: 54px;
+$i-logo-image: '../img/spritesheet.png';
+$i-logo: (0px, 0px, 0px, 0px, 48px, 38px, 67px, 54px, '../img/spritesheet.png', 'i-logo', );
+$spritesheet-width: 67px;
+$spritesheet-height: 54px;
+$spritesheet-image: '../img/spritesheet.png';
+$spritesheet-sprites: ($i-ic-card-area, $i-ic-card-bathroom, $i-ic-card-beds, $i-logo, );
+$spritesheet: (67px, 54px, '../img/spritesheet.png', $spritesheet-sprites, );
+
+/*
+The provided mixins are intended to be used with the array-like variables
+
+.icon-home {
+  @include sprite-width($icon-home);
+}
+
+.icon-email {
+  @include sprite($icon-email);
+}
+
+Example usage in HTML:
+
+`display: block` sprite:
+<div class="icon-home"></div>
+
+To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:
+
+// CSS
+.icon {
+  display: inline-block;
+}
+
+// HTML
+<i class="icon icon-home"></i>
+*/
+@mixin sprite-width($sprite) {
+  width: nth($sprite, 5);
+}
+
+@mixin sprite-height($sprite) {
+  height: nth($sprite, 6);
+}
+
+@mixin sprite-position($sprite) {
+  $sprite-offset-x: nth($sprite, 3);
+  $sprite-offset-y: nth($sprite, 4);
+  background-position: $sprite-offset-x  $sprite-offset-y;
+}
+
+@mixin sprite-image($sprite) {
+  $sprite-image: nth($sprite, 9);
+  background-image: url(#{$sprite-image});
+}
+
+@mixin sprite($sprite) {
+  @include sprite-image($sprite);
+  @include sprite-position($sprite);
+  @include sprite-width($sprite);
+  @include sprite-height($sprite);
+}
+
+/*
+The `sprites` mixin generates identical output to the CSS template
+  but can be overridden inside of SCSS
+
+@include sprites($spritesheet-sprites);
+*/
+@mixin sprites($sprites) {
+  @each $sprite in $sprites {
+    $sprite-name: nth($sprite, 10);
+    .#{$sprite-name} {
+      @include sprite($sprite);
+    }
+  }
+}
